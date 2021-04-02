@@ -10,6 +10,8 @@ def scrape():
     url = 'https://redplanetscience.com/'
     browser.visit(url)
 
+    listings = {}
+
     # Iterate through most recent news articles
     for x in range(1):
     
@@ -27,6 +29,8 @@ def scrape():
             title = list_.find("div", {"class": "content_title"}).get_text()
             paragraph = list_.find("div", {"class": "article_teaser_body"}).get_text()
             break
+    listings["title"] = title
+    listings["paragraph"] = paragraph
     browser.quit()
     # -------------------------------------------------------
     url2 = 'https://spaceimages-mars.com'
@@ -41,6 +45,7 @@ def scrape():
 
     # Assign the url string to a variable called featured_image_url
     featured_image_url = ['https://spaceimages-mars.com/' + (images['src'])][0]
+    listings["featured_image_url"] = featured_image_url
     browser.quit()
     # -------------------------------------------------------
     url3 = 'https://galaxyfacts-mars.com/'
@@ -60,6 +65,7 @@ def scrape():
 
     # Replace unwanted newlines to clean up the table
     html_table = html_table.replace('\n', '')
+    listings["html_table"] = html_table
     browser.quit()
     # -------------------------------------------------------
     url4 = 'https://marshemispheres.com/'
@@ -117,34 +123,10 @@ def scrape():
     hemisphere_image_urls = []
     for i, j in zip(all_titles, all_src):
         hemisphere_image_urls.append({"title": i, "img_url": j})
+    listings["hemisphere_image_urls"] = hemisphere_image_urls
     browser.quit()
+
+    return listings
 # -------------------------------------------------------
 # -------------------------------------------------------
 # -------------------------------------------------------
-from flask import Flask, render_template, redirect
-from flask_pymongo import PyMongo
-
-app = Flask(__name__)
-
-# Use flask_pymongo to set up mongo connection
-app.config["MONGO_URI"] = "mongodb://localhost:27017/mars_db"
-mongo = PyMongo(app)
-
-@app.route("/")
-def index():
-    listings = mongo.db.listings.find_one()
-    return render_template("index.html", listings=listings)
-
-
-@app.route("/scrape")
-def scraper():
-    listings = mongo.db.listings
-    listings_data = scrape_phone.scrape()
-    listings.update({}, listings_data, upsert=True)
-    return redirect("/", code=302)
-
-
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
