@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 from splinter import Browser
 from bs4 import BeautifulSoup
@@ -28,6 +29,7 @@ def scrape():
         
             title = list_.find("div", {"class": "content_title"}).get_text()
             paragraph = list_.find("div", {"class": "article_teaser_body"}).get_text()
+            time.sleep(1)
             break
     listings["article_title"] = title
     listings["paragraph"] = paragraph
@@ -106,12 +108,14 @@ def scrape():
         # Retrieve all elements that contain image and title information
         anchors = soup.find_all('img', class_='wide-image')
         titles = soup.find_all('h2', class_='title')
+        time.sleep(1)
     
         # Iterate through each title
         for ti in titles:
             # Use Beautiful Soup's find() method to navigate and retrieve attributes
             title2 = ti.get_text()
             all_titles.append(title2)
+            time.sleep(1)
                 
         # Iterate through each anchor
         for anchor in anchors:
@@ -119,6 +123,7 @@ def scrape():
             src = anchor['src']
             img_url = base_url + src
             all_src.append(img_url)
+            time.sleep(1)
 
     # Create a dictionary using title and img_url lists
     hemisphere_image_urls = []
