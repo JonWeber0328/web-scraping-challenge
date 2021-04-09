@@ -35,6 +35,54 @@
         <table>{{listings.html_table | safe}}</table> 
       </div>
     </div>
+    <div class="row" id="hemispheres-headline">
+      <div class="col-md-12">
+        <h2 class="text-center">Mars Hemispheres</h2>
+      </div>
+    </div>  
+    <hr>
+    {% for hemisphere in listings.hemisphere_image_urls %}
+    <div class="row" id="hemispheres">
+      <div class="col-md-3">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{hemisphere.img_url}}" alt="Card image cap">
+          <div class="card-body">
+            <p class="card-text">{{hemisphere.title}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="hemispheres">
+      <div class="col-md-3"></div>
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{hemisphere.img_url}}" alt="Card image cap">
+          <div class="card-body">
+            <p class="card-text">{{hemisphere.title}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="hemispheres">
+      <div class="col-md-3"></div>
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{hemisphere.img_url}}" alt="Card image cap">
+          <div class="card-body">
+            <p class="card-text">{{hemisphere.title}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" id="hemispheres">
+      <div class="col-md-3"></div>
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{hemisphere.img_url}}" alt="Card image cap">
+          <div class="card-body">
+            <p class="card-text">{{hemisphere.title}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %} 
   </div>
 </body>
 
