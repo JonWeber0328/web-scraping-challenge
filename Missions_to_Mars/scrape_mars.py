@@ -8,8 +8,9 @@ def scrape():
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
 
-    url = 'https://redplanetscience.com/'
+    url = "https://redplanetscience.com/"
     browser.visit(url)
+    time.sleep(1)
 
     listings = {}
 
@@ -31,12 +32,16 @@ def scrape():
             paragraph = list_.find("div", {"class": "article_teaser_body"}).get_text()
             time.sleep(1)
             break
+    print(f'{title}')
+    print(f'{paragraph}')
+
     listings["article_title"] = title
     listings["paragraph"] = paragraph
-    browser.quit()
+    
     # -------------------------------------------------------
-    url2 = 'https://spaceimages-mars.com'
+    url2 = "https://spaceimages-mars.com/"
     browser.visit(url2)
+    time.sleep(1)
 
     # HTML object
     html = browser.html
@@ -45,14 +50,20 @@ def scrape():
     # Retrieve elements that contain image header information
     images = soup.find('img', class_='headerimage')
 
+    # Retrieve src element
+    src = (images['src'])
+
     # Assign the url string to a variable called featured_image_url
-    featured_image_url = ['https://spaceimages-mars.com/' + (images['src'])][0]
+    featured_image_url = f"{url2}{src}"
+
+    print(f'{featured_image_url}')
 
     listings["featured_image_url"] = featured_image_url
-    browser.quit()
+    
     # -------------------------------------------------------
-    url3 = 'https://galaxyfacts-mars.com/'
+    url3 = "https://galaxyfacts-mars.com/"
     browser.visit(url3)
+    time.sleep(1)
 
     # Read all tables using pandas
     tables = pd.read_html(url3)
@@ -69,11 +80,14 @@ def scrape():
     # Replace unwanted newlines to clean up the table
     html_table = html_table.replace('\n', '')
 
+    print(f'{html_table}')
+
     listings["html_table"] = html_table
-    browser.quit()
+    
     # -------------------------------------------------------
-    url4 = 'https://marshemispheres.com/'
+    url4 = "https://marshemispheres.com/"
     browser.visit(url4)
+    time.sleep(1)
 
     # HTML object
     html2 = browser.html
@@ -98,24 +112,21 @@ def scrape():
     all_src = []
     for x in href_list:
     
-        urlH = f'{url4}{x}'
+        urlH = f"{url4}{x}"
         browser.visit(urlH)
-    
-        # HTML object
-        html3 = browser.html
-        # Parse HTML with Beautiful Soup
-        soup = BeautifulSoup(html3, 'html.parser')
+        time.sleep(1)
+
         # Retrieve all elements that contain image and title information
         anchors = soup.find_all('img', class_='wide-image')
         titles = soup.find_all('h2', class_='title')
-        time.sleep(1)
+        
     
         # Iterate through each title
         for ti in titles:
             # Use Beautiful Soup's find() method to navigate and retrieve attributes
             title2 = ti.get_text()
             all_titles.append(title2)
-            time.sleep(1)
+            
                 
         # Iterate through each anchor
         for anchor in anchors:
@@ -123,12 +134,15 @@ def scrape():
             src = anchor['src']
             img_url = base_url + src
             all_src.append(img_url)
-            time.sleep(1)
+            
 
     # Create a dictionary using title and img_url lists
     hemisphere_image_urls = []
     for i, j in zip(all_titles, all_src):
         hemisphere_image_urls.append({"title": i, "img_url": j})
+
+    print(f'{listings}')
+
     listings["hemisphere_image_urls"] = hemisphere_image_urls
 
     browser.quit()
