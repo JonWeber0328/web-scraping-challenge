@@ -32,7 +32,7 @@
       </div>
       <div class="col-md-5">
         <h3 class="heading">Mars Facts</h3>
-        <img src="{{listings.featured_image_url}}" alt="featured-mars-image" class="img-thumbnail">
+        <table>{{listings.html_table | safe}}</table> 
       </div>
     </div>
   </div>
