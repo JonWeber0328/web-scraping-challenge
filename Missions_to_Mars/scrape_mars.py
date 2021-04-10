@@ -6,7 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def scrape():
     executable_path = {'executable_path': ChromeDriverManager().install()}
-    browser = Browser('chrome', **executable_path, headless=False)
+    browser = Browser('chrome', **executable_path, headless=True)
 
     url = "https://redplanetscience.com/"
     browser.visit(url)
@@ -112,28 +112,33 @@ def scrape():
     all_src = []
     for x in href_list:
     
-        urlH = f"{url4}{x}"
+        base_url = "https://marshemispheres.com/"
+        urlH = f"{base_url}{x}"
         browser.visit(urlH)
-        time.sleep(1)
-
+    
+        # HTML object
+        html3 = browser.html
+        # Parse HTML with Beautiful Soup
+        soup = BeautifulSoup(html3, 'html.parser')
         # Retrieve all elements that contain image and title information
         anchors = soup.find_all('img', class_='wide-image')
         titles = soup.find_all('h2', class_='title')
-        
     
         # Iterate through each title
         for ti in titles:
             # Use Beautiful Soup's find() method to navigate and retrieve attributes
             title2 = ti.get_text()
             all_titles.append(title2)
-            
-                
+            print('-----------')
+            print(title2)
+    
         # Iterate through each anchor
         for anchor in anchors:
             # Use Beautiful Soup's find() method to navigate and retrieve attributes
             src = anchor['src']
             img_url = base_url + src
             all_src.append(img_url)
+            print(f'{img_url}')
             
 
     # Create a dictionary using title and img_url lists
@@ -141,13 +146,15 @@ def scrape():
     for i, j in zip(all_titles, all_src):
         hemisphere_image_urls.append({"title": i, "img_url": j})
 
-    print(f'{listings}')
+    print(f'{hemisphere_image_urls}')
 
     listings["hemisphere_image_urls"] = hemisphere_image_urls
 
     browser.quit()
 
     return listings
+results = scrape()
+print(results['hemisphere_image_urls'])
 # -------------------------------------------------------
 # -------------------------------------------------------
 # -------------------------------------------------------
