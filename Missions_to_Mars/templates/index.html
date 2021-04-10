@@ -41,18 +41,20 @@
       </div>
     </div>  
     <hr>
-    {% for hemisphere in listings.hemisphere_image_urls %}
-    <div class="row equal" id="hemispheres">
+    
+    <div class="row" id="hemispheres">
+      {% for hemisphere in listings.hemisphere_image_urls %}
       <div class="col-md-3">
         <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="{{hemisphere.img_url}}" alt="Card image cap">
+          <img class="img-thumbnail" src="{{hemisphere.img_url}}" alt="Card image cap">
           <div class="card-body">
             <p class="card-text">{{hemisphere.title}}</p>
           </div>
         </div>
       </div>
+      {% endfor %} 
     </div>
-    {% endfor %} 
+    
   </div>
 </body>
 
